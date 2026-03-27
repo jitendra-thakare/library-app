@@ -18,16 +18,28 @@ yargs.command({
             describe: 'Admin Login Password',
             demandOption: true,
             type: 'string'
+        },
+        studentName: {
+            describe: 'The name of New Student',
+            demandOption: true,
+            type: 'string'
+        },
+        studentPassword: {
+            describe: 'The defult Password of New Student',
+            demandOption: true,
+            type: 'string'
         }
     },
     handler(argv) {
         if(jsonHandler.checkPassword('admin',argv.password)){
             console.log(chalk.green.bold.inverse('Logged in successful'))
+            adminHandler.addStudent(argv.studentName, argv.studentPassword)
         }
         else{
             console.log(chalk.red.bold.inverse('Invalid Password!'))
         }
     }
 })
+
 
 yargs.parse()
