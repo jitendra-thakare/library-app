@@ -75,15 +75,12 @@ const addBook = function(bookName, authorName, bookCount){
         jsonHandler.saveData('book',bookData)
         console.log(chalk.green.inverse('New Book added! ')+ chalk.white.inverse(bookName))
     } else {
-        bookData.find((book) => {
-            if(book.bookName === bookName){
-                bookExists.bookCount += bookCountInt
-                if(book.authorName === 'Not Entered' && authorName !== 'Not Entered' ){
-                    book.authorName = authorName
-                    console.log(chalk.yellow.inverse('Book Author Name Added :'+ authorName))
-                }
-            }
-        })
+        bookExists.bookCount += bookCountInt
+
+        if(bookExists.authorName === 'Not Entered' && authorName !== 'Not Entered'){
+            bookExists.authorName = authorName
+            console.log(chalk.yellow.inverse('Book Author Name Added :' + authorName))
+        }
         jsonHandler.saveData('book',bookData)
         console.log(chalk.yellow.inverse(bookCount+' '+bookName+' Books Added'))
     }
@@ -106,7 +103,7 @@ const removeBook = function(bookName){
 const listBooks = function(){
     const bookData = jsonHandler.loadData('book')
     console.log(chalk.cyan.inverse('Book Name and Available Books'))
-    oddRow = true
+    let oddRow = true
     bookData.forEach((book) => {
         if(oddRow){
             console.log(book.bookName + ' Available Books '+ book.bookCount)

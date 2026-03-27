@@ -75,7 +75,7 @@ yargs.command({
         }
     },
     handler(argv) {
-        if(adminHandler.isAdminAuthenticated(argv.password)){
+        if(adminHandler.isAdminAuthenticated(argv.oldPassword)){
             jsonHandler.changePassword('admin',argv.newPassword)
         }
     }
