@@ -53,7 +53,7 @@ const addBook = function(bookName, authorName, bookCount){
             jsonHandler.saveData('book',bookData)
             console.log(chalk.green.inverse('New Book added!'))
             console.log(chalk.white.inverse(bookName))
-        } else if(bookCount !== 0){
+        } else if(parseInt(bookCount) !== 0){
             const newBookCount = bookExists.bookCount+parseInt(bookCount)
             console.log(newBookCount)
             bookData.find((book) => {
@@ -67,6 +67,8 @@ const addBook = function(bookName, authorName, bookCount){
             })
             jsonHandler.saveData('book',bookData)
             console.log(chalk.yellow.inverse(bookCount+' '+bookName+' Books Added'))
+        } else{
+            console.log(chalk.red.inverse('Book Count should be greater than 0'))
         }
 }
 module.exports = {
