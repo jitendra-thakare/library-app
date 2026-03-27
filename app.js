@@ -67,5 +67,28 @@ yargs.command({
     }
 })
 
-
+yargs.command({
+    command: 'changePasswordAdmin',
+    describe: 'Change Password for Admin',
+    builder: {
+        oldPassword: {
+            describe: 'Admin Login Password',
+            demandOption: true,
+            type: 'string'
+        },
+        newPassword: {
+            describe: 'Admin New Password',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler(argv) {
+        if(jsonHandler.checkPassword('admin',argv.oldPassword)){
+            jsonHandler.changePassword('admin',argv.newPassword)
+        }
+        else{
+            console.log(chalk.red.bold.inverse('Invalid Password!'))
+        }
+    }
+})
 yargs.parse()
