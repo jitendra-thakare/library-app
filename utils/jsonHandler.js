@@ -16,28 +16,25 @@ const saveData = (file, data) => {
     fs.writeFileSync('./data/'+file+'.json', JSON.stringify(data))
 }
 
-const checkPassword = (profile,username, password) => {
+const checkPassword = (profile, username, password) => {
     const profileData = loadData(profile)
 
-    if (profileData )
-    {
-        let storedPassword
-        if(username=='admin'){
-            storedPassword = profileData.password
+    if (!profileData) return false
+
+    let storedPassword
+
+    if (profile === 'admin') {
+        storedPassword = profileData.password
+    } else {
+        const user = profileData.find(p => p.username === username)
+        if (user) {
+            storedPassword = user.password
         }
-        else{
-            profileData.find(profile => {
-            if(profile.username === username)
-                {
-                    storedPassword = profile.password 
-                }
-            })
-            
-        }
-        return storedPassword === password
     }
-    return false
+
+    return storedPassword === password
 }
+
 const changePassword = function(profile,username,newPassword){
 
     const schema = new passwordValidator()
