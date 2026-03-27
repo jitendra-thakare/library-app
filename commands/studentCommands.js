@@ -52,4 +52,37 @@ yargs.command({
         }
     }
 })
+
+yargs.command({
+    command: 'issueOrReturnBook',
+    describe: 'Issue book to Student',
+    builder: {
+        username: {
+            describe: 'Student Username',
+            demandOption: true,
+            type: 'string'
+        },
+        password: {
+            describe: 'User Login Password',
+            demandOption: true,
+            type: 'string'
+        },
+        bookName: {
+            describe: 'Book Name to Issue',
+            demandOption: true,
+            type: 'string'
+        },
+        issueOrReturn: {
+            describe: 'Whether User have to issue or return',
+            demandOption: true,
+            type: 'string'
+        }
+
+    },
+    handler(argv) {
+        if(studentHandler.isStudentAuthenticated(argv.username, argv.password)){
+            studentHandler.issueReturnBook(argv.username,argv.bookName,argv.issueOrReturn)
+        }
+    }
+})
 module.exports = yargs

@@ -28,8 +28,7 @@ const addStudent = function(studentUserName, studentPassword){
         studentData.push({
             username: studentUserName,
             password: studentPassword,
-            issuedBooks : [],
-            penalty : []
+            issuedBooks : []
         })
         jsonHandler.saveData('student',studentData)
         console.log(chalk.green.inverse('New Student added!'))
