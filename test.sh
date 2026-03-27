@@ -1,158 +1,99 @@
-# 📚 Library CLI App – Test Commands
+#!/bin/bash
 
----
+echo "================= SETUP ================="
 
-## 🔐 ADMIN AUTH TESTS
+echo "Installing npm packages..."
+npm install
 
-# ❌ Admin tries to add student with wrong password
+echo "Resetting data files..."
+echo '{ "username": "admin", "password": "admin123" }' > ./data/admin.json
+echo '[]' > ./data/student.json
+echo '[]' > ./data/book.json
 
+echo "================= ADMIN AUTH TEST ================="
 node app.js addStudent --password=wrong --studentName=Test --studentPassword=1234
 
----
-
-## 🔑 ADMIN PASSWORD VALIDATION TESTS
-
-# ❌ Password length < 8
-
+echo "================= ADMIN PASSWORD VALIDATION ================="
 node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=Abc1234
-
-# ❌ Password length > 16
-
 node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=Abcdefghijklmn12345678
-
-# ❌ No uppercase letter
-
 node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=abcd1234
-
-# ❌ No lowercase letter
-
 node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=ABCD1234
-
-# ❌ No digits
-
 node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=abcdEFGG
 
-# ✅ Valid password
-
+echo "---- Valid Password Change ----"
 node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=Abcd1234
 
----
-
-## 👨‍🎓 ADD STUDENTS
-
-# ✅ Add students
-
+echo "================= ADD STUDENTS ================="
 node app.js addStudent --password=Abcd1234 --studentName=Jay --studentPassword=1234
 node app.js addStudent --password=Abcd1234 --studentName=Raj --studentPassword=1234
 node app.js addStudent --password=Abcd1234 --studentName=Om --studentPassword=1234
 
-# ❌ Duplicate student
-
+echo "---- Duplicate Student ----"
 node app.js addStudent --password=Abcd1234 --studentName=Jay --studentPassword=1234
 
-# ❌ Blank username
-
+echo "---- Invalid Inputs ----"
 node app.js addStudent --password=Abcd1234 --studentName="" --studentPassword=1234
-
-# ❌ Blank password
-
 node app.js addStudent --password=Abcd1234 --studentName=Test --studentPassword=""
 
----
-
-## 📚 ADD BOOKS
-
-# ❌ Blank book name
-
+echo "================= ADD BOOKS ================="
 node app.js addBook --password=Abcd1234 --bookName="" --bookCount=5
-
-# ❌ Invalid book count
-
 node app.js addBook --password=Abcd1234 --bookName=English --bookCount=0
 
-# ✅ Add book without author
-
 node app.js addBook --password=Abcd1234 --bookName=English --bookCount=10
-
-# ✅ Add book with author
-
 node app.js addBook --password=Abcd1234 --bookName=English --authorName=Smith --bookCount=10
 
-# ✅ Add Maths
-
 node app.js addBook --password=Abcd1234 --bookName=Maths --authorName=Shrinivas --bookCount=20
-
-# ✅ Update Maths author
-
 node app.js addBook --password=Abcd1234 --bookName=Maths --authorName=Ramanujan --bookCount=20
-
-# ✅ Add Geography
 
 node app.js addBook --password=Abcd1234 --bookName=Geography --authorName=Haresh --bookCount=1
 
----
+echo "================= STUDENT FLOW ================="
 
-## 🔐 STUDENT ACTIONS
-
-# ✅ Jay changes password
-
+echo "---- Jay changes password ----"
 node app.js changePasswordStudent --username=Jay --oldPassword=1234 --newPassword=Jay1234
 
-# ❌ Issue unavailable book
+node app.js changePasswordStudent --username=Jay --oldPassword=1234 --newPassword=Jay12345
 
-node app.js issueOrReturnBook --username=Jay --password=Jay1234 --bookName=Science --issueOrReturn=issue
+echo "---- Issue unavailable book ----"
+node app.js issueOrReturnBook --username=Jay --password=Jay12345 --bookName=Science --issueOrReturn=issue
 
-# 📖 List books
+echo "---- List Books ----"
+node app.js listBooksStudent --username=Jay --password=Jay12345
 
-node app.js listBooksStudent --username=Jay --password=Jay1234
+echo "---- Jay issues Geography ----"
+node app.js issueOrReturnBook --username=Jay --password=Jay12345 --bookName=Geography --issueOrReturn=issue
 
-# ✅ Jay issues Geography
-
-node app.js issueOrReturnBook --username=Jay --password=Jay1234 --bookName=Geography --issueOrReturn=issue
-
-# ❌ Raj tries same (no stock)
-
+echo "---- Raj tries same book ----"
 node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=Geography --issueOrReturn=issue
 
-# 🔄 Jay returns Geography
+echo "---- Jay returns Geography ----"
+node app.js issueOrReturnBook --username=Jay --password=Jay12345 --bookName=Geography --issueOrReturn=return
 
-node app.js issueOrReturnBook --username=Jay --password=Jay1234 --bookName=Geography --issueOrReturn=return
-
-# ✅ Raj issues Geography
-
+echo "---- Raj issues Geography ----"
 node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=Geography --issueOrReturn=issue
 
-# ✅ Raj issues more books
-
+echo "---- Raj issues English & Maths ----"
 node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=English --issueOrReturn=issue
 node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=Maths --issueOrReturn=issue
 
-# 📋 Raj checks issued books
-
+echo "---- Raj checks issued books ----"
 node app.js checkIssuedBooks --username=Raj --password=1234
 
----
+echo "================= ADMIN CLEANUP ================="
 
-## 🧑‍💼 ADMIN CLEANUP
-
-# ❌ Try deleting Raj (should fail if books issued)
-
+echo "---- Try deleting Raj ----"
 node app.js removeStudent --password=Abcd1234 --studentName=Raj
 
-# ✅ Remove Om
-
+echo "---- Remove Om ----"
 node app.js removeStudent --password=Abcd1234 --studentName=Om
 
-# ❌ Remove Geography (issued)
-
+echo "---- Try removing Geography ----"
 node app.js removeBook --password=Abcd1234 --bookName=Geography
 
-# 🔄 Raj returns Geography
-
+echo "---- Raj returns Geography ----"
 node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=Geography --issueOrReturn=return
 
-# ✅ Now remove Geography
-
+echo "---- Remove Geography ----"
 node app.js removeBook --password=Abcd1234 --bookName=Geography
 
----
+echo "================= TEST COMPLETED ================="
