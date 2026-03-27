@@ -15,8 +15,15 @@ const saveData = (file, data) => {
     fs.writeFileSync('./data/'+file+'.json', JSON.stringify(data))
 }
 
-const checkPassword= (profile,password) => ( loadData(profile).password === password )
+const checkPassword = (profile, password) => {
+    const data = loadData(profile)
 
+    if (!data || !data.password) {
+        return false
+    }
+
+    return data.password === password
+}
 const changePassword = function(profile,newPassword){
     const schema = new passwordValidator()
     schema.is().min(8,'Minimum Password Length Should be 8.').
