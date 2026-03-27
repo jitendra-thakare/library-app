@@ -36,15 +36,21 @@ const addStudent = function(studentUserName, studentPassword){
 }
 const removeStudent = function(studentUserName){
     const studentData = jsonHandler.loadData('student')
-    const studentDataModified = studentData.filter((student) => student.username !== studentUserName)
+    const student = studentData.find(s => s.username === studentUserName)
 
-    if (studentData.length >studentDataModified.length){
-        console.log(chalk.yellow.inverse(studentUserName+' Account Deleted!'))
-        jsonHandler.saveData('student',studentDataModified)
-    } 
-    else {
-            console.log(chalk.red.inverse('Student Does not exists!'))
+    if (!student) {
+        console.log(chalk.red.inverse('Student Does not exist!'))
+        return
     }
+
+    if (student.issuedBooks.length > 0) {
+        console.log(chalk.red.inverse('Cannot delete! Student has issued books'))
+        return
+    }
+    const updatedData = studentData.filter(s => s.username !== studentUserName)
+    jsonHandler.saveData('student', updatedData)
+
+    console.log(chalk.yellow.inverse(studentUserName + ' Account Deleted!'))
 }
 
 const addBook = function(bookName, authorName, bookCount){

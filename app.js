@@ -54,7 +54,6 @@ yargs.command({
     },
     handler(argv) {
         if(adminHandler.isAdminAuthenticated(argv.password)){
-            console.log(chalk.green.bold.inverse('Logged in successful'))
             adminHandler.removeStudent(argv.studentName)
         }
     }
