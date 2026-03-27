@@ -1,6 +1,6 @@
 const chalk = require('chalk')
 const jsonHandler = require("../utils/jsonHandler")
-
+const studentHandler = require("./student")
 const test = function(){
     console.log('Admin Connected')
 }
@@ -48,6 +48,7 @@ const removeStudent = function(studentUserName){
 
     if (student.issuedBooks.length > 0) {
         console.log(chalk.red.inverse('Cannot delete! Student has issued books'))
+        studentHandler.checkIssuedBooks(studentUserName)
         return
     }
     const updatedData = studentData.filter(s => s.username !== studentUserName)
