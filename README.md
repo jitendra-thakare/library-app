@@ -1,158 +1,90 @@
-# 📚 Library CLI App – Test Commands
+# Library Management CLI App
+## Project Description
+
+This is a command line based Library Management System built using Node.js.
+It allows an admin to manage students and books, and students to issue and return books.
+
+## Commands
+
+### Admin Commands
+
+node app.js addStudent --password=<adminPassword> --studentName=<name> --studentPassword=<password>
+node app.js removeStudent --password=<adminPassword> --studentName=<name>
+node app.js addBook --password=<adminPassword> --bookName=<name> --authorName=<author> --bookCount=<count>
+node app.js removeBook --password=<adminPassword> --bookName=<name>
+node app.js listBooksAdmin --password=<adminPassword>
+node app.js listBooksIssued --password=<adminPassword> --bookName=<name>
+node app.js changePasswordAdmin --oldPassword=<old> --newPassword=<new>
 
 ---
 
-## 🔐 ADMIN AUTH TESTS
+### Student Commands
 
-# ❌ Admin tries to add student with wrong password
-
-node app.js addStudent --password=wrong --studentName=Test --studentPassword=1234
-
----
-
-## 🔑 ADMIN PASSWORD VALIDATION TESTS
-
-# ❌ Password length < 8
-
-node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=Abc1234
-
-# ❌ Password length > 16
-
-node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=Abcdefghijklmn12345678
-
-# ❌ No uppercase letter
-
-node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=abcd1234
-
-# ❌ No lowercase letter
-
-node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=ABCD1234
-
-# ❌ No digits
-
-node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=abcdEFGG
-
-# ✅ Valid password
-
-node app.js changePasswordAdmin --oldPassword=admin123 --newPassword=Abcd1234
+node app.js changePasswordStudent --username=<name> --oldPassword=<old> --newPassword=<new>
+node app.js listBooksStudent --username=<name> --password=<password>
+node app.js issueOrReturnBook --username=<name> --password=<password> --bookName=<name> --issueOrReturn=issue
+node app.js issueOrReturnBook --username=<name> --password=<password> --bookName=<name> --issueOrReturn=return
+node app.js checkIssuedBooks --username=<name> --password=<password>
 
 ---
 
-## 👨‍🎓 ADD STUDENTS
 
-# ✅ Add students
+## Features
 
-node app.js addStudent --password=Abcd1234 --studentName=Jay --studentPassword=1234
-node app.js addStudent --password=Abcd1234 --studentName=Raj --studentPassword=1234
-node app.js addStudent --password=Abcd1234 --studentName=Om --studentPassword=1234
-
-# ❌ Duplicate student
-
-node app.js addStudent --password=Abcd1234 --studentName=Jay --studentPassword=1234
-
-# ❌ Blank username
-
-node app.js addStudent --password=Abcd1234 --studentName="" --studentPassword=1234
-
-# ❌ Blank password
-
-node app.js addStudent --password=Abcd1234 --studentName=Test --studentPassword=""
+* Admin authentication system
+* Add and remove students
+* Add and remove books
+* Track issued books
+* Student login system
+* Issue and return books
+* Input validation and error handling
 
 ---
 
-## 📚 ADD BOOKS
+## Tech Stack
 
-# ❌ Blank book name
-
-node app.js addBook --password=Abcd1234 --bookName="" --bookCount=5
-
-# ❌ Invalid book count
-
-node app.js addBook --password=Abcd1234 --bookName=English --bookCount=0
-
-# ✅ Add book without author
-
-node app.js addBook --password=Abcd1234 --bookName=English --bookCount=10
-
-# ✅ Add book with author
-
-node app.js addBook --password=Abcd1234 --bookName=English --authorName=Smith --bookCount=10
-
-# ✅ Add Maths
-
-node app.js addBook --password=Abcd1234 --bookName=Maths --authorName=Shrinivas --bookCount=20
-
-# ✅ Update Maths author
-
-node app.js addBook --password=Abcd1234 --bookName=Maths --authorName=Ramanujan --bookCount=20
-
-# ✅ Add Geography
-
-node app.js addBook --password=Abcd1234 --bookName=Geography --authorName=Haresh --bookCount=1
+* Node.js
+* yargs (for CLI commands)
+* chalk (for terminal styling)
+* JSON files for data storage
 
 ---
 
-## 🔐 STUDENT ACTIONS
+## Project Structure
 
-# ✅ Jay changes password
-
-node app.js changePasswordStudent --username=Jay --oldPassword=1234 --newPassword=Jay1234
-
-# ❌ Issue unavailable book
-
-node app.js issueOrReturnBook --username=Jay --password=Jay1234 --bookName=Science --issueOrReturn=issue
-
-# 📖 List books
-
-node app.js listBooksStudent --username=Jay --password=Jay1234
-
-# ✅ Jay issues Geography
-
-node app.js issueOrReturnBook --username=Jay --password=Jay1234 --bookName=Geography --issueOrReturn=issue
-
-# ❌ Raj tries same (no stock)
-
-node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=Geography --issueOrReturn=issue
-
-# 🔄 Jay returns Geography
-
-node app.js issueOrReturnBook --username=Jay --password=Jay1234 --bookName=Geography --issueOrReturn=return
-
-# ✅ Raj issues Geography
-
-node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=Geography --issueOrReturn=issue
-
-# ✅ Raj issues more books
-
-node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=English --issueOrReturn=issue
-node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=Maths --issueOrReturn=issue
-
-# 📋 Raj checks issued books
-
-node app.js checkIssuedBooks --username=Raj --password=1234
+commands/ → CLI command definitions
+modules/ → Business logic (admin, student, book)
+utils/ → Utility functions (JSON handler, validation)
+data/ → JSON files for storing data
+app.js → Entry point
 
 ---
 
-## 🧑‍💼 ADMIN CLEANUP
+## Installation
 
-# ❌ Try deleting Raj (should fail if books issued)
-
-node app.js removeStudent --password=Abcd1234 --studentName=Raj
-
-# ✅ Remove Om
-
-node app.js removeStudent --password=Abcd1234 --studentName=Om
-
-# ❌ Remove Geography (issued)
-
-node app.js removeBook --password=Abcd1234 --bookName=Geography
-
-# 🔄 Raj returns Geography
-
-node app.js issueOrReturnBook --username=Raj --password=1234 --bookName=Geography --issueOrReturn=return
-
-# ✅ Now remove Geography
-
-node app.js removeBook --password=Abcd1234 --bookName=Geography
+npm install
 
 ---
+
+## Run Application
+
+node app.js <command>
+
+---
+
+## Run Full Test
+
+bash test.sh
+
+---
+
+## Notes
+
+* Admin credentials are stored in data/admin.json
+* Students are stored in data/student.json
+* Books are stored in data/book.json
+* Ensure correct passwords are used for authentication
+* Book and student data are kept in sync during issue/return operations
+
+---
+
