@@ -31,12 +31,9 @@ yargs.command({
         }
     },
     handler(argv) {
-        if(jsonHandler.checkPassword('admin',argv.password)){
+        if(adminHandler.isAdminAuthenticated(argv.password)){
             console.log(chalk.green.bold.inverse('Logged in successful'))
             adminHandler.addStudent(argv.studentName, argv.studentPassword)
-        }
-        else{
-            console.log(chalk.red.bold.inverse('Invalid Password!'))
         }
     }
 })
@@ -57,12 +54,9 @@ yargs.command({
         }
     },
     handler(argv) {
-        if(jsonHandler.checkPassword('admin',argv.password)){
+        if(adminHandler.isAdminAuthenticated(argv.password)){
             console.log(chalk.green.bold.inverse('Logged in successful'))
             adminHandler.removeStudent(argv.studentName)
-        }
-        else{
-            console.log(chalk.red.bold.inverse('Invalid Password!'))
         }
     }
 })
@@ -83,11 +77,8 @@ yargs.command({
         }
     },
     handler(argv) {
-        if(jsonHandler.checkPassword('admin',argv.oldPassword)){
+        if(adminHandler.isAdminAuthenticated(argv.password)){
             jsonHandler.changePassword('admin',argv.newPassword)
-        }
-        else{
-            console.log(chalk.red.bold.inverse('Invalid Password!'))
         }
     }
 })
@@ -118,12 +109,8 @@ yargs.command({
 
     },
     handler(argv) {
-        if(jsonHandler.checkPassword('admin',argv.password)){
-            console.log(chalk.green.bold.inverse('Logged in successful'))
+        if(adminHandler.isAdminAuthenticated(argv.password)){
             adminHandler.addBook(argv.bookName,argv.authorName, argv.bookCount)
-        }
-        else{
-            console.log(chalk.red.bold.inverse('Invalid Password!'))
         }
     }
 })
@@ -145,12 +132,26 @@ yargs.command({
 
     },
     handler(argv) {
-        if(jsonHandler.checkPassword('admin',argv.password)){
-            console.log(chalk.green.bold.inverse('Logged in successful'))
+        if(adminHandler.isAdminAuthenticated(argv.password)){
             adminHandler.removeBook(argv.bookName)
         }
-        else{
-            console.log(chalk.red.bold.inverse('Invalid Password!'))
+    }
+})
+
+yargs.command({
+    command: 'listBooks',
+    describe: 'List all Books',
+    builder: {
+        password: {
+            describe: 'Admin Login Password',
+            demandOption: true,
+            type: 'string'
+        }
+
+    },
+    handler(argv) {
+        if(adminHandler.isAdminAuthenticated(argv.password)){
+            adminHandler.listBooks()
         }
     }
 })
