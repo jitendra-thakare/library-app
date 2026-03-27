@@ -59,7 +59,7 @@ const addBook = function(bookName, authorName, bookCount){
             bookData.find((book) => {
                 if(book.bookName === bookName){
                     book.bookCount = newBookCount
-                    if(book.authorName === "Not Entered" && authorName.length !== 0 ){
+                    if(book.authorName === 'Not Entered' && authorName !== 'Not Entered' ){
                         book.authorName = authorName
                         console.log(chalk.yellow.inverse('Book Author Name Added :'+ authorName))
                     }
