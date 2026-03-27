@@ -57,24 +57,27 @@ const addBook = function(bookName, authorName, bookCount){
     const bookData = jsonHandler.loadData('book')
     const bookExists = bookData.find((book) => book.bookName === bookName)
 
+    const bookCountInt = parseInt(bookCount)
+    if(isNaN(bookCountInt) || bookCountInt <=0 ) {
+        console.log(chalk.red.inverse('Invalid book count!'))
+        return
+    }
     if(!authorName){
         authorName="Not Entered"
     }
-    if (!bookExists) {
+    if (!bookExists ) {
         bookData.push({
             bookName: bookName,
             authorName: authorName,
-            bookCount : parseInt(bookCount),
+            bookCount : bookCountInt,
             issuedTo : []
         })
         jsonHandler.saveData('book',bookData)
-        console.log(chalk.green.inverse('New Book added!'))
-        console.log(chalk.white.inverse(bookName))
-    } else if(parseInt(bookCount) !== 0){
-        const newBookCount = bookExists.bookCount+parseInt(bookCount)
+        console.log(chalk.green.inverse('New Book added! ')+ chalk.white.inverse(bookName))
+    } else {
         bookData.find((book) => {
             if(book.bookName === bookName){
-                book.bookCount = newBookCount
+                bookExists.bookCount += bookCountInt
                 if(book.authorName === 'Not Entered' && authorName !== 'Not Entered' ){
                     book.authorName = authorName
                     console.log(chalk.yellow.inverse('Book Author Name Added :'+ authorName))
@@ -83,8 +86,6 @@ const addBook = function(bookName, authorName, bookCount){
         })
         jsonHandler.saveData('book',bookData)
         console.log(chalk.yellow.inverse(bookCount+' '+bookName+' Books Added'))
-    } else{
-        console.log(chalk.red.inverse('Book Count should be greater than 0'))
     }
 }
 
