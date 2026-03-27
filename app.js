@@ -127,4 +127,31 @@ yargs.command({
         }
     }
 })
+
+yargs.command({
+    command: 'removeBook',
+    describe: 'Remove a Book',
+    builder: {
+        password: {
+            describe: 'Admin Login Password',
+            demandOption: true,
+            type: 'string'
+        },
+        bookName: {
+            describe: 'The name of Book',
+            demandOption: true,
+            type: 'string'
+        }
+
+    },
+    handler(argv) {
+        if(jsonHandler.checkPassword('admin',argv.password)){
+            console.log(chalk.green.bold.inverse('Logged in successful'))
+            adminHandler.removeBook(argv.bookName)
+        }
+        else{
+            console.log(chalk.red.bold.inverse('Invalid Password!'))
+        }
+    }
+})
 yargs.parse()

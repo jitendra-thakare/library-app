@@ -71,6 +71,19 @@ const addBook = function(bookName, authorName, bookCount){
             console.log(chalk.red.inverse('Book Count should be greater than 0'))
         }
 }
+
+
+const removeBook = function(bookName){
+        const bookData = jsonHandler.loadData('book')
+        const bookExists = bookData.filter((book) => book.bookName !== bookName)
+
+        if (bookExists.length !== bookData.length) {
+            jsonHandler.saveData('book',bookExists)
+            console.log(chalk.red.inverse(bookName + ' Book Deleted!'))
+        } else{
+            console.log(chalk.yellow.inverse('Book Doesnt exists'))
+        }
+}
 module.exports = {
-    test, addStudent,removeStudent, addBook
+    test, addStudent,removeStudent, addBook, removeBook
 }
