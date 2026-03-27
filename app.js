@@ -91,4 +91,40 @@ yargs.command({
         }
     }
 })
+
+yargs.command({
+    command: 'addBook',
+    describe: 'Add a Book',
+    builder: {
+        password: {
+            describe: 'Admin Login Password',
+            demandOption: true,
+            type: 'string'
+        },
+        bookName: {
+            describe: 'The name of Book',
+            demandOption: true,
+            type: 'string'
+        },
+        authorName: {
+            describe: 'The Name of Author',
+            type: 'string'
+        },
+        bookCount: {
+            describe: 'The count of that Book',
+            demandOption: true,
+            type: 'string'
+        }
+
+    },
+    handler(argv) {
+        if(jsonHandler.checkPassword('admin',argv.password)){
+            console.log(chalk.green.bold.inverse('Logged in successful'))
+            adminHandler.addBook(argv.bookName,argv.authorName, argv.bookCount)
+        }
+        else{
+            console.log(chalk.red.bold.inverse('Invalid Password!'))
+        }
+    }
+})
 yargs.parse()

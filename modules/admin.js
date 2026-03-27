@@ -28,14 +28,35 @@ const removeStudent = function(studentUserName){
     const studentDataModified = studentData.filter((student) => student.username !== studentUserName)
 
     if (studentData.length >studentDataModified.length){
-            console.log(chalk.yellow.inverse(studentUserName+' Account Deleted!'))
-            jsonHandler.saveData('student',studentDataModified)
-        } 
-        else {
+        console.log(chalk.yellow.inverse(studentUserName+' Account Deleted!'))
+        jsonHandler.saveData('student',studentDataModified)
+    } 
+    else {
             console.log(chalk.red.inverse('Student Does not exists!'))
-        }
-
     }
+}
+
+const addBook = function(bookName, authorName, bookCount){
+        const bookData = jsonHandler.loadData('book')
+        const bookExists = bookData.find((book) => book.bookName === bookName)
+
+        if(!authorName){
+            authorName="Not Entered"
+        }
+        if (!bookExists) {
+            bookData.push({
+                bookName: bookName,
+                authorName: authorName,
+                bookCount : parseInt(bookCount),
+                issuedTo : []
+            })
+            jsonHandler.saveData('book',bookData)
+            console.log(chalk.green.inverse('New Book added!'))
+            console.log(chalk.white.inverse(bookName))
+        } else {
+            console.log(chalk.red.inverse('Book Already Exists!'))
+        }
+}
 module.exports = {
-    test, addStudent,removeStudent
+    test, addStudent,removeStudent, addBook
 }
