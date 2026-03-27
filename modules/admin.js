@@ -6,7 +6,7 @@ const test = function(){
 }
 
 const isAdminAuthenticated = (password) => {
-    if (jsonHandler.checkPassword('admin', password)) {
+    if (jsonHandler.checkPassword('admin','admin', password)) {
         console.log(chalk.green.bold.inverse('Logged in successful'))
         return true
     } else {
