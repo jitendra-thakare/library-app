@@ -32,7 +32,6 @@ yargs.command({
     },
     handler(argv) {
         if(adminHandler.isAdminAuthenticated(argv.password)){
-            console.log(chalk.green.bold.inverse('Logged in successful'))
             adminHandler.addStudent(argv.studentName, argv.studentPassword)
         }
     }

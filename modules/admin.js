@@ -17,9 +17,10 @@ const isAdminAuthenticated = (password) => {
 
 const addStudent = function(studentUserName, studentPassword){
     const studentData = jsonHandler.loadData('student')
-    const duplicateNote = studentData.find((student) => student.username === studentUserName)
-
-    if (!duplicateNote) {
+    const existingStudent = studentData.find(
+        (student) => student.username === studentUserName
+    )
+    if (!existingStudent) {
         studentData.push({
             username: studentUserName,
             password: studentPassword,
