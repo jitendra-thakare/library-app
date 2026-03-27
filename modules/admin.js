@@ -17,6 +17,10 @@ const isAdminAuthenticated = (password) => {
 
 const addStudent = function(studentUserName, studentPassword){
     const studentData = jsonHandler.loadData('student')
+    if (!studentUserName || !studentPassword) {
+        console.log('Invalid input')
+        return
+    }
     const existingStudent = studentData.find(
         (student) => student.username === studentUserName
     )
@@ -73,7 +77,7 @@ const addBook = function(bookName, authorName, bookCount){
             issuedTo : []
         })
         jsonHandler.saveData('book',bookData)
-        console.log(chalk.green.inverse('New Book added! ')+ chalk.white.inverse(bookName))
+        console.log(chalk.green.inverse(`New Book added! ${bookName}`))
     } else {
         bookExists.bookCount += bookCountInt
 
@@ -89,19 +93,30 @@ const addBook = function(bookName, authorName, bookCount){
 
 const removeBook = function(bookName){
     const bookData = jsonHandler.loadData('book')
-    const bookExists = bookData.filter((book) => book.bookName !== bookName)
+    const bookExists = bookData.find(b => b.bookName === bookName)
 
-    if (bookExists.length !== bookData.length) {
-        jsonHandler.saveData('book',bookExists)
-        console.log(chalk.red.inverse(bookName + ' Book Deleted!'))
-    } else{
-        console.log(chalk.yellow.inverse('Book Doesnt exists'))
+    if (!bookExists) {
+        console.log(chalk.yellow.inverse('Book Doesnt exist'))
+        return
     }
+
+    if (bookExists.issuedTo.length > 0) {
+        console.log(chalk.red.inverse('Cannot delete! Book is issued to below students:\n' + bookExists.issuedTo.join(', ')))
+        return
+    }
+
+    const updatedBooks = bookData.filter(book => book.bookName !== bookName)
+    jsonHandler.saveData('book', updatedBooks)
+    console.log(chalk.green.inverse(bookName + ' Book Deleted!'))
 }
 
 
 const listBooks = function(){
     const bookData = jsonHandler.loadData('book')
+    if (bookData.length === 0) {
+        console.log(chalk.yellow.inverse('No books available'))
+        return
+    }
     console.log(chalk.cyan.inverse('Book Name and Available Books'))
     let oddRow = true
     bookData.forEach((book) => {
