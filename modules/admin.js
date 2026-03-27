@@ -23,7 +23,19 @@ const addStudent = function(studentUserName, studentPassword){
             console.log(chalk.red.inverse('Username Already taken!'))
         }
 }
+const removeStudent = function(studentUserName){
+    const studentData = jsonHandler.loadData('student')
+    const studentDataModified = studentData.filter((student) => student.username !== studentUserName)
 
+    if (studentData.length >studentDataModified.length){
+            console.log(chalk.yellow.inverse(studentUserName+' Account Deleted!'))
+            jsonHandler.saveData('student',studentDataModified)
+        } 
+        else {
+            console.log(chalk.red.inverse('Student Does not exists!'))
+        }
+
+    }
 module.exports = {
-    test, addStudent
+    test, addStudent,removeStudent
 }

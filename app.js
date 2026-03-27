@@ -41,5 +41,31 @@ yargs.command({
     }
 })
 
+yargs.command({
+    command: 'removeStudent',
+    describe: 'Delete a Student',
+    builder: {
+        password: {
+            describe: 'Admin Login Password',
+            demandOption: true,
+            type: 'string'
+        },
+        studentName: {
+            describe: 'The username of Student to be deleted',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler(argv) {
+        if(jsonHandler.checkPassword('admin',argv.password)){
+            console.log(chalk.green.bold.inverse('Logged in successful'))
+            adminHandler.removeStudent(argv.studentName)
+        }
+        else{
+            console.log(chalk.red.bold.inverse('Invalid Password!'))
+        }
+    }
+})
+
 
 yargs.parse()
