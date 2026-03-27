@@ -68,4 +68,23 @@ const changePassword = function(profile,username,newPassword){
         passwordValidations.filter((passwordValidation) => console.log(chalk.red.inverse(passwordValidation.message)))
     }
 }
-module.exports = { loadData, saveData, checkPassword, changePassword}
+
+const listBooks = function(){
+    const bookData = loadData('book')
+    if (bookData.length === 0) {
+        console.log(chalk.yellow.inverse('No books available'))
+        return
+    }
+    console.log(chalk.cyan.inverse('Book Name and Available Books'))
+    let oddRow = true
+    bookData.forEach((book) => {
+        if(oddRow){
+            console.log(book.bookName + ' Available Books '+ book.bookCount)
+            
+        }else{
+            console.log(chalk.inverse(book.bookName + ' Available Books '+ book.bookCount))
+        }
+        oddRow = !oddRow
+    })
+}
+module.exports = { loadData, saveData, checkPassword, changePassword, listBooks}

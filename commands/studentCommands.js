@@ -29,4 +29,27 @@ yargs.command({
     }
 })
 
+
+yargs.command({
+    command: 'listBooksStudent',
+    describe: 'List all Books',
+    builder: {
+        username: {
+            describe: 'Student Username',
+            demandOption: true,
+            type: 'string'
+        },
+        password: {
+            describe: 'User Login Password',
+            demandOption: true,
+            type: 'string'
+        }
+
+    },
+    handler(argv) {
+        if(studentHandler.isStudentAuthenticated(argv.username, argv.password)){
+            jsonHandler.listBooks()
+        }
+    }
+})
 module.exports = yargs

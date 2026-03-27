@@ -129,11 +129,11 @@ yargs.command({
 })
 
 yargs.command({
-    command: 'listBooks',
+    command: 'listBooksAdmin',
     describe: 'List all Books',
     builder: {
         password: {
-            describe: 'Admin Login Password',
+            describe: 'User Login Password',
             demandOption: true,
             type: 'string'
         }
@@ -141,7 +141,7 @@ yargs.command({
     },
     handler(argv) {
         if(adminHandler.isAdminAuthenticated(argv.password)){
-            adminHandler.listBooks()
+            jsonHandler.listBooks()
         }
     }
 })

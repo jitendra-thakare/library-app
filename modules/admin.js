@@ -111,24 +111,7 @@ const removeBook = function(bookName){
 }
 
 
-const listBooks = function(){
-    const bookData = jsonHandler.loadData('book')
-    if (bookData.length === 0) {
-        console.log(chalk.yellow.inverse('No books available'))
-        return
-    }
-    console.log(chalk.cyan.inverse('Book Name and Available Books'))
-    let oddRow = true
-    bookData.forEach((book) => {
-        if(oddRow){
-            console.log(book.bookName + ' Available Books '+ book.bookCount)
-            
-        }else{
-            console.log(chalk.inverse(book.bookName + ' Available Books '+ book.bookCount))
-        }
-        oddRow = !oddRow
-    })
-}
+
 module.exports = {
-    test, addStudent,removeStudent, addBook, removeBook, listBooks ,isAdminAuthenticated
+    test, addStudent,removeStudent, addBook, removeBook ,isAdminAuthenticated
 }
