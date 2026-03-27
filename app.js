@@ -10,7 +10,24 @@ const bookHandler = require('./modules/book.js')
 
 yargs.version('1.0.0')
 
-jsonHandler()
-adminHandler()
-studentHandler()
-bookHandler()
+yargs.command({
+    command: 'addStudent',
+    describe: 'Add a Student',
+    builder: {
+        password: {
+            describe: 'Admin Login Password',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler(argv) {
+        if(jsonHandler.checkPassword('admin',argv.password)){
+            console.log(chalk.green.bold.inverse('Logged in successful'))
+        }
+        else{
+            console.log(chalk.red.bold.inverse('Invalid Password!'))
+        }
+    }
+})
+
+yargs.parse()

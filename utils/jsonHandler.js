@@ -1,5 +1,15 @@
-const test = function(){
-    console.log('Utils Connected')
+const loadData = (file) => {
+    try {
+        const data = fs.readFileSync('./data/'+file+'.json')
+        return JSON.parse(data.toString())
+    } catch {
+        return []
+    }
 }
 
-module.exports = test
+const checkPassword= (profile,password) => ( loadData(profile).password === password )
+
+
+module.exports = {
+    checkPassword, loadData
+}
