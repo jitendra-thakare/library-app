@@ -40,6 +40,14 @@ const updateBookCount = function (username,bookName, flag, bookCount){
         }})
     jsonHandler.saveData('book', bookData)
 }
+
+const bookIssuedBy = function(bookName){
+    const bookData = returnBook(bookName)
+    console.log(chalk.cyan.inverse(bookName+ 'Book is Issued by'))
+    bookData.issuedTo.forEach(s => {
+        console.log(chalk.yellow.inverse(s))
+    });
+}
 module.exports = {
-    returnBook, updateBookCount
+    returnBook, updateBookCount, bookIssuedBy
 }

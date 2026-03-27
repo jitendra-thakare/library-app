@@ -1,5 +1,6 @@
 const yargs = require('yargs')
 const adminHandler = require('../modules/admin')
+const bookHandler = require('../modules/book')
 const jsonHandler = require('../utils/jsonHandler.js')
 
 yargs.command({
@@ -142,6 +143,29 @@ yargs.command({
     handler(argv) {
         if(adminHandler.isAdminAuthenticated(argv.password)){
             jsonHandler.listBooks()
+        }
+    }
+})
+
+yargs.command({
+    command: 'listBooksIssued',
+    describe: 'List students who issued Book',
+    builder: {
+        password: {
+            describe: 'User Login Password',
+            demandOption: true,
+            type: 'string'
+        },
+        bookName: {
+            describe: 'Book Name',
+            demandOption: true,
+            type: 'string'
+        }
+
+    },
+    handler(argv) {
+        if(adminHandler.isAdminAuthenticated(argv.password)){
+            bookHandler.bookIssuedBy(argv.bookName)
         }
     }
 })
