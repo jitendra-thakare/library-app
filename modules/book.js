@@ -31,6 +31,7 @@ const updateBookCount = function (username,bookName, flag, bookCount){
             }else{
                 
                 if(username !== 'admin' && flag =='return'){
+                    b.bookCount += bookCount;
                     b.issuedTo = b.issuedTo.filter((s) => s !== username)
                     console.log(chalk.cyan.inverse(bookName+' is returned by '+username))
                 }else{

@@ -59,6 +59,10 @@ const removeStudent = function(studentUserName){
 
 const addBook = function(bookName, authorName, bookCount){
     const bookData = jsonHandler.loadData('book')
+    if (!bookName) {
+        console.log('Invalid input for Book Name')
+        return
+    }
     const bookExists = bookData.find((book) => book.bookName === bookName)
 
     const bookCountInt = parseInt(bookCount)
