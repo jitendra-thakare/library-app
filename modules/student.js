@@ -7,7 +7,7 @@ const test = function(){
 }
 const returnStudent = function (studentUsername){
     const studentData = jsonHandler.loadData('student')
-    return bookData.find((s) => s.username == studentUsername)
+    return studentData.find((s) => s.username == studentUsername)
 }
 const isStudentAuthenticated = (username, password) => {
     if (jsonHandler.checkPassword('student', username, password)) {
@@ -54,6 +54,13 @@ const updateStudentBookData = function(studentUserName, bookName,flag){
     jsonHandler.saveData('student', studentData)
 }
 
+const checkIssuedBooks = function(username){
+    const studentData =  returnStudent(username)
+    console.log(chalk.cyan.inverse('Books Issued by '+username))
+    studentData.issuedBooks.forEach(book => {
+        console.log(chalk.yellow.inverse(book))
+    });
+}
 module.exports = {
-    isStudentAuthenticated, issueReturnBook
+    isStudentAuthenticated, issueReturnBook, checkIssuedBooks
 }
